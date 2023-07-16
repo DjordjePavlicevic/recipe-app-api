@@ -1,5 +1,5 @@
 '''
-Djanog command to wait for database to be available.
+Django command to wait for database to be available.
 '''
 from django.core.management.base import BaseCommand
 
