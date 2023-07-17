@@ -26,5 +26,5 @@ class ModelTests(TestCase):
         ]
 
         for email, expected in sample_emails:
-            user = get_user_model().object.create_user(email, 'sample123')
+            user = get_user_model().objects.create_user(email, 'sample123')
             self.assertEqual(user.email, expected)
