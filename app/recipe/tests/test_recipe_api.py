@@ -23,7 +23,7 @@ def create_recipe(user, **params):
         'link' : 'https://example.com/recipe.pdf'
     }
     defaults.update(params)
-    recipe = Recipe.object.create(user=user, **defaults)
+    recipe = Recipe.objects.create(user=user, **defaults)
 
     return recipe
 
@@ -41,7 +41,7 @@ class PublicRecipeApiTests(TestCase):
 class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests"""
     def setUp(self):
-        self.client = APIClient
+        self.client = APIClient()
         self.user = get_user_model().objects.create_user(
             'user@example.com',
             'testpass123',
@@ -54,7 +54,7 @@ class PrivateRecipeApiTests(TestCase):
         create_recipe(user=self.user)
 
         res = self.client.get(RECIPES_URL)
-        recipes = Recipe.object.all().order_by('-id')
+        recipes = Recipe.objects.all().order_by('-id')
 
         serializer = RecipeSerializer(recipes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -62,7 +62,7 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipe_list_limited_to_user(self):
         """Test list od recipes is limited to authenticate user"""
-        other_user = get_user_model().object.create_user(
+        other_user = get_user_model().objects.create_user(
             'other@example.com',
             'testotherpass123'
         )
